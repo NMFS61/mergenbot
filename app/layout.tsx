@@ -33,7 +33,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
   return (
     <html lang="en" data-toolpad-color-scheme="light">
       <body>
-        
+        <React.Suspense fallback={<div>Loading...</div>}>
           <AppRouterCacheProvider options={{ enableCssLayer: true }}>
             <NextAppProvider
               theme={theme}
@@ -54,7 +54,7 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                   </DashboardLayout>
             </NextAppProvider>
           </AppRouterCacheProvider>
-        
+        </React.Suspense>
       </body>
     </html>
   );
