@@ -42,15 +42,16 @@ export default async function RootLayout({ children }: Readonly<{ children: Reac
                 logo:<img src="https://mui.com/static/logo.png"/>,
                 title:'Mergen Bot',
                 homeUrl:'/'
+              
               }}
               // session={session}
               // authentication={AUTHENTICATION}
             >
-                  <DashboardLayout hideNavigation>
-                    <PageContainer>
+                  <DashboardLayout hideNavigation sx={{marginLeft:0}}>
+                    {/* <PageContainer sx={{marginLeft:0}}> */}
                       {children}
                       <Copyright sx={{ my: 4 }} />
-                    </PageContainer>
+                    {/* </PageContainer> */}
                   </DashboardLayout>
             </NextAppProvider>
           </AppRouterCacheProvider>

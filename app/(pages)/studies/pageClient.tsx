@@ -10,6 +10,8 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Grid from "@mui/material/Grid2";
+import SidebarTreeView from "@/app/components/layout/sidebar/SidebarTreeView";
 
 
 interface IProp{
@@ -17,6 +19,11 @@ interface IProp{
 }
 export default function PageClient(props:IProp) {
   return (
+    <Grid container spacing={1}>
+      <Grid size={2}>
+        <SidebarTreeView/>
+      </Grid>
+      <Grid size={9}>
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
@@ -43,5 +50,7 @@ export default function PageClient(props:IProp) {
         </TableBody>
       </Table>
     </TableContainer>
+    </Grid>
+    </Grid>
   );
 }
