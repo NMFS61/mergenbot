@@ -1,5 +1,1 @@
-
-## Getting Started
-
-Installation steps:
-
+# Colleauge Notification App
