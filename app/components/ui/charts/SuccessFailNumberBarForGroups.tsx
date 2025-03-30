@@ -38,18 +38,19 @@ export default function SuccessFailNumberBarForGroups(props:IProps) {
         dataY_Fail.push(fail);
         setData({"groups":dataX,"success":dataY_Success,"fail":dataY_Fail});
   });
-  },[]);
-  const res=props.results;
-  const dataX=[] as string[];
-  const dataY_Success=[] as number[];
-  const dataY_Fail=[] as number[];
-  res.forEach((r)=>{
-    dataX.push(r.indexGroup);
-    const success=r.execResults.filter((er)=>er.success==true).length;
-    const fail=r.execResults.filter((er)=>er.success==false).length;
-    dataY_Success.push(success);
-    dataY_Fail.push(fail);
-  });
+  },[props]);
+
+  // const res=props.results;
+  // const dataX=[] as string[];
+  // const dataY_Success=[] as number[];
+  // const dataY_Fail=[] as number[];
+  // res.forEach((r)=>{
+  //   dataX.push(r.indexGroup);
+  //   const success=r.execResults.filter((er)=>er.success==true).length;
+  //   const fail=r.execResults.filter((er)=>er.success==false).length;
+  //   dataY_Success.push(success);
+  //   dataY_Fail.push(fail);
+  // });
   
 
   return (

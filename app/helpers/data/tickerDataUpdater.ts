@@ -1,48 +1,94 @@
-import { writeFile,readFileSync } from "fs";
+import { writeFile,readFileSync,rmSync ,existsSync,mkdirSync } from "fs";
 import { EOD_TOKEN } from "@/constants";
 import { readCSVSync } from "../pandas";
 import { console } from "inspector";
+import { getMarketGroupsWithMeta } from "../readMarketMetaData";
 
-export function updateHistoricalData(ticker:string,exchange:string){
-    console.log("**9")
-    const path=process.cwd()+"/data/"+exchange+"/"+ticker+"_D1.csv";
-    let data=readFileSync(path, 'utf8');
-    const rows=readCSVSync(ticker, exchange, "D1");
-    const lastRow=rows[rows.length-2];
-   
-    const dateFrom=lastRow.date.toLocaleString("default", { year: "numeric" })+"-"+
-                   lastRow.date.toLocaleString("default", { month: "2-digit" })+"-"+
-                   lastRow.date.toLocaleString("default", { day: "2-digit" })
-    const dt_Last=new Date();
-    // we'll use yesterday, because if this runs on early in the morning.
-    dt_Last.setDate(dt_Last.getDate()-1);
+const dowloadGroupIndex=["FOREX","BIST 100","FTSE 100","FTSE 250","NASDAQ 100","NYSE 200"];
+export function resetDataFolder(){
+    // delete data folder and recreate it with subfolders
+    const dir=process.cwd()+"/data";
+    rmSync(dir, { recursive: true, force: true });
+    const dirs=["FOREX","FOREX/DIVIDENDS","FOREX/SPLITS",
+                "IS","IS/DIVIDENDS","IS/SPLITS",
+                "LSE","LSE/DIVIDENDS","LSE/SPLITS",
+                "IS","IS/DIVIDENDS","IS/SPLITS",
+                "LSE","LSE/DIVIDENDS","LSE/SPLITS",
+                "US","US/DIVIDENDS","US/SPLITS"
+                ];
+    mkdirSync(dir);
+    dirs.forEach((d)=>{
+        if(!existsSync(dir+"/"+d)){mkdirSync(dir+"/"+d);}
+        
+    });
+}
+const _dowloadAllHistoricalData=(dateTo:string)=>{
     
+    getMarketGroupsWithMeta().forEach((group) => {
+        group.tickers.forEach((ticker) => {
+            if(dowloadGroupIndex.includes(group.name)){
+                downloadHistoricalData(
+                "2000-01-01",
+                "2025-03-24",
+                ticker.Ticker,
+                group.exchange
+                );
+            }
+        });
+    });
+};
+const _dowloadAllDivData=(dateTo:string)=>{
+    getMarketGroupsWithMeta().forEach((group) => {
+        group.tickers.forEach((ticker) => {
+          
+          if (group.name != "FOREX" && dowloadGroupIndex.includes(group.name)) {
+            download_DIVIDENDHistory(
+              "2000-01-01",
+              dateTo,
+              ticker.Ticker,
+              group.exchange
+            );
+          }
+        });
+      });
+}
+const _dowloadAllSplitData=(dateTo:string)=>{
+    getMarketGroupsWithMeta().forEach((group) => {
+        group.tickers.forEach((ticker) => {
+        if (group.name != "FOREX" && dowloadGroupIndex.includes(group.name)) {
+            try {
+                download_StockSplitHistory(
+                "2000-01-01",
+                dateTo,
+                ticker.Ticker,
+                group.exchange
+                );
+            }catch(e){}
+          }
+        });
+      });
+}
+
+export function updateHistoricalData_ALL(){
+    
+    // const dt=new Date(); // today
+    // dt.setDate(dt.getDate() - 1); // Yesterday!
+    // const dateTo=dt.toISOString().split('T')[0]; // morning run, so yesterday's data is available
+    // we'll use yesterday, because if this runs on early in the morning.
+    const dt_Last=new Date();
+    dt_Last.setDate(dt_Last.getDate()-1);
+        
     const dateTo=dt_Last.toLocaleString("default", { year: "numeric" })+"-"+
                  dt_Last.toLocaleString("default", { month: "2-digit" })+"-"+
                  dt_Last.toLocaleString("default", { day: "2-digit" });
-    const lines=readFileSync(path,"utf-8").split('\n');
-    const newLines=[]
-    lines.forEach((line)=>{if(line.trim()!=""){newLines.push(line);}});
-    console.log(dateFrom," - ", dateTo);
-    (async () => {
-        const rawResponse = await fetch(`https://eodhd.com/api/eod/${ticker}.${exchange}?api_token=${EOD_TOKEN}&fmt=json&from=${dateFrom}&to=${dateTo}`);
-        const rows = await rawResponse.json();
-        
-        //let data="Date,Open,High,Low,Close,Volume\n";
-        let i=0
-        rows.forEach((row)=>{
-            // first one is the last date of existing , skip it
-            if(i>0){ data+=`${row.date},${row.open},${row.high},${row.low},${row.close},${row.volume}\n`;}
-            i++;
-        });
-        let newLinesStr="";
-        newLines.forEach((line)=>{newLinesStr=line+"\n"}); // existing file content
-        newLinesStr=newLinesStr+data; // finally added the updates
-        writeFile(path, newLinesStr, (err) => {
-            if (err) throw err;
-        })    
-    })();
-    
+    // STEP 1: Delete all data
+    resetDataFolder();
+    //STEP 2: Download all historical data
+     _dowloadAllHistoricalData(dateTo);
+     _dowloadAllDivData(dateTo);
+     _dowloadAllSplitData(dateTo);
+
+    return "Data update completed";
 }
 
 export function downloadHistoricalData(dateFrom:string,dateTo:string,ticker:string,exchange:string){

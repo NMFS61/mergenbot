@@ -17,6 +17,8 @@ import MainLayout from "@/app/components/layout/MainLayout";
 import { I_Warning } from "@/app/interface/IComponents";
 import { I_StudyExec_indexGroup_Result, I_StudyExecParams } from "@/app/interface/IExecution";
 import ExecuteButton from "@/app/components/layout/sidebar/ExecuteButton";
+import { get } from "http";
+import { getStudyDescription } from "./execParams/studyMetadata";
 
 interface IProp {
   studyID: string;
@@ -28,6 +30,7 @@ export default function PageContent(props: IProp) {
   const [executable, setExecutable] = React.useState(false);
   const [inProgress, setInProgress] = React.useState(false);
   const [results, setResults] = React.useState([] as I_StudyExec_indexGroup_Result[]);
+  const [showDesription, setDescription] = React.useState(true);
   const sidebarRef=React.useRef<IRefSidebar>(null);//inital 
   
   // Execute the study
@@ -69,6 +72,13 @@ export default function PageContent(props: IProp) {
       <Grid size={9}>
         <PageContentContainer pageHeaderTitle="Study area" warnings={alerts}>
            
+           {/* ROW 0 : Execute button & Info about study */}
+           
+           <Grid size={12}>
+                {showDesription&& getStudyDescription(props.studyID)}
+                  
+              </Grid>   
+
            {/* ROW 1 : Execute button & Info about study */}
            
              <Grid size={12}>

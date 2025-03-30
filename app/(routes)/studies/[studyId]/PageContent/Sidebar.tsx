@@ -9,6 +9,7 @@ import MarketGroupSelection from "@/app/components/layout/sidebar/MarketChoiceSe
 import { I_Warning } from "@/app/interface/IComponents";
 import { I_MarketParams, I_StudyExecParams } from "@/app/interface/IExecution";
 import { getMarketGroupsWithMeta } from "@/app/helpers/readMarketMetaData";
+import { getFirstStudyParams } from "../execParams/studyMetadata";
 
 
 interface IProp{
@@ -25,13 +26,14 @@ export interface IRefSidebar{
 function StudySidebar(props:IProp,ref:Ref<IRefSidebar>) {
   // states
     const [warnings, setWarnings] = React.useState([] as I_Warning[]);
-    const [studyParams, setStudyParams] = React.useState({});
+    const [studyParams, setStudyParams] = React.useState(getFirstStudyParams(props.studyID));
     const [datesData, setDatesData] = React.useState({"allDates":true,"dateStart":new Date(),"dateEnd":new Date()} as IDatesData);
     const [marketGroupChoice,setmarketGroupChoice]=React.useState("all");
 
   // handling functions
   const updateDates = (dateData:IDatesData) => {setDatesData(dateData);}
   const updateWarnings = (origin,warningList:string[]) => {
+
     const newWarnings=warnings.filter((w)=>w.origin!=origin) as I_Warning[]; //cleared all the origin ones
     warningList.forEach((w)=>{newWarnings.push({"origin":origin,"text":w} as I_Warning)})
     setWarnings(newWarnings);

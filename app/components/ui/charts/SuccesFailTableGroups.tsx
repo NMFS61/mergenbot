@@ -57,7 +57,7 @@ export default function SuccesFailTableGroups(props:IProps) {
 
     React.useEffect(()=>{
           const _rows = [];
-          
+          try{
           const targetPC=props.results[0].execResults[0].meta.targetPercent;
           props.results.forEach((r)=>{
             
@@ -66,8 +66,9 @@ export default function SuccesFailTableGroups(props:IProps) {
             const lossIncomefor100=calcFailsAvgReturnfor100(r.execResults.filter((er)=>er.success==false));
             const avgDays=avgDaysToClose(r.execResults.filter((er)=>er.success==true));
             _rows.push(createData(r.indexGroup,success,fail,targetPC,lossIncomefor100,avgDays));
-            
+          
           });
+        }catch(e){console.log(e);}
           setRows(_rows);
 
     },[props.results]);

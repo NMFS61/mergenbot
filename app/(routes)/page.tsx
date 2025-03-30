@@ -1,3 +1,4 @@
+'use server';
 import { checkIfExist } from "@/app/helpers/readData";
 import { getMarketGroupsWithMeta } from "@/app/helpers/readMarketMetaData";
 import {
@@ -14,7 +15,8 @@ import {
   downloadHistoricalData,
   download_DIVIDENDHistory,
   download_StockSplitHistory,
-  updateHistoricalData,
+  resetDataFolder,
+  updateHistoricalData_ALL,
 } from "../helpers/data/tickerDataUpdater";
 
 
@@ -23,76 +25,6 @@ import { TickerDivData } from "../interface/ITickerExtra";
 import { I_StudyExecParams } from "../interface/IExecution";
 import Study1 from "../backend/study/study1-buy-dropPC2";
 
-const download = () => {
-  getMarketGroupsWithMeta().forEach((group) => {
-    group.tickers.forEach((ticker) => {
-      if (group.name == "FOREX") {
-        downloadHistoricalData(
-          "2000-01-01",
-          "2025-03-12",
-          ticker.Ticker,
-          group.exchange
-        );
-      }
-    });
-  });
-};
-
-const update = () => {
-  getMarketGroupsWithMeta().forEach((group) => {
-    group.tickers.forEach((ticker) => {
-      // if (group.name == "NASDAQ 100") {
-        updateHistoricalData(ticker.Ticker,group.exchange);
-      // }
-    });
-  });
-  download_DivHistory();
-  download_StockSplits()
-};
-
-const download_StockSplits = () => {
-  getMarketGroupsWithMeta().forEach((group) => {
-    group.tickers.forEach((ticker) => {
-      if (group.name != "FOREX") {
-        const dt_Last=new Date();
-        // we'll use yesterday, because if this runs on early in the morning.
-        dt_Last.setDate(dt_Last.getDate()-1);
-        
-        const dateTo=dt_Last.toLocaleString("default", { year: "numeric" })+"-"+
-                     dt_Last.toLocaleString("default", { month: "2-digit" })+"-"+
-                     dt_Last.toLocaleString("default", { day: "2-digit" });
-        download_StockSplitHistory(
-          "2000-01-01",
-          dateTo,
-          ticker.Ticker,
-          group.exchange
-        );
-      }
-    });
-  });
-};
-const download_DivHistory = () => {
-  const dt_Last=new Date();
-        // we'll use yesterday, because if this runs on early in the morning.
-        dt_Last.setDate(dt_Last.getDate()-1);
-        
-        const dateTo=dt_Last.toLocaleString("default", { year: "numeric" })+"-"+
-                     dt_Last.toLocaleString("default", { month: "2-digit" })+"-"+
-                     dt_Last.toLocaleString("default", { day: "2-digit" });
-
-  getMarketGroupsWithMeta().forEach((group) => {
-    group.tickers.forEach((ticker) => {
-      if (group.name != "FOREX") {
-        download_DIVIDENDHistory(
-          "2000-01-01",
-          dateTo,
-          ticker.Ticker,
-          group.exchange
-        );
-      }
-    });
-  });
-};
 
 const downloadSingle = (ticker: string, exchange: string) => {
   downloadHistoricalData("2000-01-01", "2025-02-28", ticker, exchange);
@@ -215,14 +147,12 @@ export default async function Page({searchParams,}:
                                                 {searchParams?: { [key: string]: string | undefined };}) 
   {
   
-  // update();
-  // download();
-  // downloadSingle("CIMSA","IS");
-  // download_StockSplits();
-  // download_DivHistory();
+    //  console.log(updateHistoricalData_ALL());
+
   // dropByAnalysis1();
   // dropByAnalysisWithStudyExecutor();
   // getSharesByDividendYield();
+
   let params={
     studyId: '1',
     dateFrom: new Date('2000-01-01T00:00:00.000Z'),
@@ -243,12 +173,17 @@ export default async function Page({searchParams,}:
 
   
   const results=execute_Study(params);
-
+  results.forEach((r)=>{
+    console.log(r.indexGroup);
+    r.execResults.forEach((er)=>{
+      console.log(er);
+    })
+  })
+  
   const s=new Study1();
  
-  // s.collect(params.studyParams,[],"test");
-
-  console.log(results);
+  s.collect(params.studyParams,[],"test");
+  
   
   return <PageContent temp={[""]} />;
 }

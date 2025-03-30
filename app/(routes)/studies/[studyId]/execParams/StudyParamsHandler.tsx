@@ -5,11 +5,14 @@ interface IProp {
     updateWarnings: (warnings: []) => void;
     updateParams: (params: any) => void;
 }
+
 export default function StudyParams(props: IProp) {
     return ( 
         <>
         {props.studyId=="1" && 
-            <Study1Params onParamsUpdated={props.updateParams} onParamWarningsChange={props.updateWarnings} />
+            <Study1Params onParamsUpdated={props.updateParams} 
+                          onParamWarningsChange={props.updateWarnings} 
+                           />
         }
         </>
      );

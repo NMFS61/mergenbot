@@ -16,11 +16,7 @@ class Study1 implements I_Study {
   
    collect = (studyParams: any, rows: I_TickerRow[],ticker:string): I_CollectedPosition[] => {
       const positions = [] as I_CollectedPosition[];
-      console.log("*********************");
-      console.log(ticker);
-      
-      
-
+      try{
       let peak = rows[0].high;
       let analysisStarted = rows[0].date;
       const dropBy = studyParams.dropByPC as number;
@@ -44,6 +40,7 @@ class Study1 implements I_Study {
             analysisStarted = row.date; // update the analysis start date
          }
       });
+   }catch(e){console.log(e);}
    // try{}}catch(e){console.log(e);}
       return positions;
    }

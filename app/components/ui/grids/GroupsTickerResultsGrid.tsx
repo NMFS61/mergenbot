@@ -89,9 +89,9 @@ export default function GroupsTickerResultsGrid(props:IProps) {
                 dataTables.push({"market":groupRes.indexGroup,"rows":rowsForGroup} as IData)
         })
         setPositionsData(dataTables); 
-   },[props.results])
+   },[props])
    
-   
+   React.useEffect(()=>{setSelectedGroup("FTSE 100")},[positionsData])
  
 
    React.useEffect(()=>{

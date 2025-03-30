@@ -50,6 +50,6 @@ export function execute_Study(executionParams:I_StudyExecParams):I_StudyExec_ind
             results.push({"exchange":group.exchange,"indexGroup":group.name,"execResults":indexMarketResult});
         }
     })
-    
+  
 return results;
 }

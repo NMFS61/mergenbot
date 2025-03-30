@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid2";
 import { TextField } from '@mui/material';
 import { I_Study1Params } from '@/app/backend/study/study1-buy-dropPC2';
+import { getFirstStudyParams } from './studyMetadata';
 
 
 
@@ -14,7 +15,7 @@ interface IProp {
   onParamsUpdated: (params: any) => void;
 }
 export default function Study1Params(props: IProp) {
-  const [params, setParams] = React.useState({"dropByPC":0,"increaseTargetPC":0} as I_Study1Params);
+  const [params, setParams] = React.useState(getFirstStudyParams("1") as I_Study1Params);
   
   // is study params complete (aka executable)
   React.useEffect(() => {
@@ -34,6 +35,7 @@ export default function Study1Params(props: IProp) {
     props.onParamWarningsChange(warnings);
   }, [params]);
 
+
   const handleParamChange = (paramName: string, value: any) => {
     
     let newParams = {...params};
@@ -50,11 +52,11 @@ export default function Study1Params(props: IProp) {
         <Grid container spacing={2}>
             <Grid size={12} /> 
             <Grid size={6}>
-              <TextField id="txt-DropBy" type='number' label="Drops by %" defaultValue="0" 
+              <TextField id="txt-DropBy" type='number' label="Drops by %" defaultValue={params.dropByPC} 
                          onChange={(e)=>handleParamChange("dropByPC",e.target.value)}/>
             </Grid> 
             <Grid size={6}>
-              <TextField id="txt-IncreaseBy" type='number' label="Then icreases by %" defaultValue="0"
+              <TextField id="txt-IncreaseBy" type='number' label="Then icreases by %" defaultValue={params.increaseTargetPC} 
                          onChange={(e)=>handleParamChange("increaseTargetPC",e.target.value)}/>
             </Grid> 
         </Grid>
