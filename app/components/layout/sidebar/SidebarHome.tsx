@@ -81,6 +81,8 @@ const ITEMS: TreeViewBaseItem<ExtendedTreeItemProps>[] = [
         ],
       },
       { id: '3,4', label: 'FOREX', color: 'blue' },
+      { id: '3,5', label: 'Dividend Data(all)', color: 'blue' },
+      
       
     ],
   },
@@ -203,6 +205,8 @@ export default function SidebarHome() {
         if(event==="BIST 50") {router.push('/market/BIST50');}
         if(event==="BIST 100") {router.push('/market/BIST100');}
         if(event==="FOREX") {router.push('/market/FOREX');}
+        if(event==="Dividend Data(all)") {router.push('/market/dividend');}
+        
         };
 
   return (
