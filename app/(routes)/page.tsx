@@ -23,7 +23,7 @@ import {
 import { NextRequest } from "next/server";
 import { TickerDivData } from "../interface/ITickerExtra";
 import { I_StudyExecParams } from "../interface/IExecution";
-import Study1 from "../backend/study/study1-buy-dropPC2";
+import Study1 from "../backend/study/study2-buy-drop-volatility";
 
 
 const downloadSingle = (ticker: string, exchange: string) => {
@@ -52,7 +52,13 @@ const part1 = () => {
   });
 };
 
-
+function getAllIndexes(text:string, substring:string) {
+  var indexes = [], i = -1;
+  while ((i = text.indexOf(substring, i+1)) != -1){
+      indexes.push(i);
+  }
+  return indexes;
+}
 
 const getDivSummary=(divs,rows)=>{
   const firstDate = rows[0].date;
@@ -154,7 +160,7 @@ export default async function Page({searchParams,}:
   // getSharesByDividendYield();
 
   let params={
-    studyId: '1',
+    studyId: '2',
     dateFrom: new Date('2000-01-01T00:00:00.000Z'),
     dateTo: new Date('2025-01-01T00:00:00.000Z'),
     dateAll: false,
@@ -168,7 +174,7 @@ export default async function Page({searchParams,}:
       ],
       tickers: []
     },
-    studyParams: { dropByPC: '50', increaseTargetPC: '50' }
+    studyParams: { dropByPC: '50', increaseTargetPC: '100', 'shorterVolatilityPC': '5' },
   } as I_StudyExecParams;
 
   
@@ -176,14 +182,29 @@ export default async function Page({searchParams,}:
   results.forEach((r)=>{
     console.log(r.indexGroup);
     r.execResults.forEach((er)=>{
-      console.log(er);
+      console.log(er.ticker);
+      // console.log(er.meta.pattern);
+      let patternStr="";
+      er.meta.pattern.forEach((p)=>{
+        patternStr=patternStr+p.pattern;
+      })
+      
+      const indexes=getAllIndexes(patternStr,"-------+");
+      let resStr="";
+      indexes.forEach((i)=>{
+        resStr=resStr+patternStr.substring(i+"-------+".length,i+"-------+".length+1);
+      });
+      if(resStr!="") {
+        
+        const indplus=getAllIndexes(resStr,"+")
+        const indminus=getAllIndexes(resStr,"-")
+        const pc=indplus.length/(indplus.length+indminus.length);
+        console.log(`${er.ticker}:${resStr} (${pc}%)`);
+       
+      }
     })
   })
   
-  const s=new Study1();
- 
-  s.collect(params.studyParams,[],"test");
-  
-  
+
   return <PageContent temp={[""]} />;
 }

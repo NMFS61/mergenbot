@@ -4,7 +4,7 @@ import { getMarketGroupsWithMeta } from "@/app/helpers/readMarketMetaData";
 
 import { TickerMD } from "@/app/interface/IMarketinfo";
 import { I_EvaluatedPosition, I_MarketParams, I_Study, I_StudyExec_indexGroup_Result, I_StudyExecParams } from "@/app/interface/IExecution";
-import Study1 from "./study1-buy-dropPC2";
+import Study1 from "./study2-buy-drop-volatility";
 const _getRowsWithDateRange=(ticker:TickerMD,exchange:string,execParams:I_StudyExecParams)=>{
         const rows = readCSVSync(ticker.Ticker,exchange,"D1");
        

@@ -5,8 +5,8 @@ import CardContent from '@mui/material/CardContent';
 import Typography from '@mui/material/Typography';
 import Grid from "@mui/material/Grid2";
 import { TextField } from '@mui/material';
-import { I_Study1Params } from '@/app/backend/study/study1-buy-dropPC2';
-import { getFirstStudyParams } from './studyMetadata';
+import {  I_Study2Params } from '@/app/backend/study/study2-buy-drop-volatility';
+import { getFirstStudyParams } from '../studyMetadata';
 
 
 
@@ -14,23 +14,23 @@ interface IProp {
   onParamWarningsChange: (warnings:string[]) => void;
   onParamsUpdated: (params: any) => void;
 }
-export default function Study1Params(props: IProp) {
-  const [params, setParams] = React.useState(getFirstStudyParams("1") as I_Study1Params);
+export default function Study2Params(props: IProp) {
+  const [params, setParams] = React.useState(getFirstStudyParams("2") as I_Study2Params);
   
   // is study params complete (aka executable)
   React.useEffect(() => {
     let isExecutable=false;
     const warnings=[] as string[];
-    if(params.dropByPC && params.increaseTargetPC){
-      if(params.dropByPC>0 && params.increaseTargetPC>0){
+    if(params.dropByPC && params.increaseTargetPC && params.shorterVolatilityPC){
+      if(params.dropByPC>0 && params.increaseTargetPC>0 && params.shorterVolatilityPC>0){
         isExecutable=true;
       }
       else{
-        warnings.push("Both the 'Drop by Percent' and 'Increase Target percent' should be  be greater than 1")
+        warnings.push("Both the 'Drop by Percent' and 'Increase Target percent' and 'shorterVolatilityPC' should be  be greater than 1")
       }
     }
     else{
-      warnings.push("'Drop by Percent' and 'Increase Target percent' should be entered and be greater than 1")
+      warnings.push("'Drop by Percent' and 'Increase Target percent' and 'shorterVolatilityPC' should be entered and be greater than 1")
     }
     props.onParamWarningsChange(warnings);
   }, [params]);
@@ -58,6 +58,10 @@ export default function Study1Params(props: IProp) {
             <Grid size={6}>
               <TextField id="txt-IncreaseBy" type='number' label="Then icreases by %" defaultValue={params.increaseTargetPC} 
                          onChange={(e)=>handleParamChange("increaseTargetPC",e.target.value)}/>
+            </Grid> 
+            <Grid size={6}>
+              <TextField id="txt-Volatility" type='number' label="shorter Volatility %" defaultValue={params.shorterVolatilityPC} 
+                         onChange={(e)=>handleParamChange("shorterVolatilityPC",e.target.value)}/>
             </Grid> 
         </Grid>
            
