@@ -2,16 +2,16 @@ import { STOCKS_IS } from "@/app/constants/data/_stocksIS";
 import CustomCard from "../../ui/CustomCard";
 import CustomizedTickerHook from "@/app/components/ui/CustomizedTickerHook";
 import { TickerBasicInfo } from "@/app/interface/ITickerExtra";
-import { MARKET_GROUPS } from "@/app/constants/data/market-groups";
+import { INDEX_GROUPS } from "@/app/constants/data/market-groups";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
-const bist30Tickers=MARKET_GROUPS.find((group)=>group.name==="BIST 30")?.tickers;
+const bist30Tickers=INDEX_GROUPS.find((group)=>group.name==="BIST 30")?.tickers;
 const bist30TickersList=STOCKS_IS.filter((stock)=>bist30Tickers.includes(stock.Code)) as TickerBasicInfo[];
 
-const bist50Tickers=MARKET_GROUPS.find((group)=>group.name==="BIST 50")?.tickers;
+const bist50Tickers=INDEX_GROUPS.find((group)=>group.name==="BIST 50")?.tickers;
 const bist50TickersList=STOCKS_IS.filter((stock)=>bist50Tickers.includes(stock.Code)) as TickerBasicInfo[];
 
-const bist100Tickers=MARKET_GROUPS.find((group)=>group.name==="BIST 100")?.tickers;
+const bist100Tickers=INDEX_GROUPS.find((group)=>group.name==="BIST 100")?.tickers;
 const bist100TickersList=STOCKS_IS.filter((stock)=>bist100Tickers.includes(stock.Code)) as TickerBasicInfo[];
 
 interface IProp{

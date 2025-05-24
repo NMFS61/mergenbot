@@ -1,11 +1,11 @@
-import {MARKET_GROUPS} from '@/app/constants/data/market-groups';
+import {INDEX_GROUPS} from '@/app/constants/data/market-groups';
 import {STOCKS_IS} from '@/app/constants/data/_stocksIS';
 import {STOCKS_LSE} from '@/app/constants/data/_stocksLSE';
 import {STOCKS_US} from '@/app/constants/data/_stocksUS';
 import {TickerMD,MarketGroupsWithMeta} from '@/app/interface/IMarketinfo';
 
 export const getMarketGroupsWithMeta = () => {
-    const marketGroupsWithMeta = MARKET_GROUPS.map((group) => {
+    const marketGroupsWithMeta = INDEX_GROUPS.map((group) => {
         
         const tickers = group.tickers.map((ticker) => getTickerMD(ticker,group.exchange));   
         return {

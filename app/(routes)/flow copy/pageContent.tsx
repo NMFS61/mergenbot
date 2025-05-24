@@ -5,7 +5,6 @@ import {
   Edge,
   Node,
   ReactFlow,
-  ReactFlowProvider,
   addEdge,
   applyEdgeChanges,
   applyNodeChanges,
@@ -20,10 +19,6 @@ import TriangleNode from './_ui/Triangle';
 
 import { on } from 'events';
 import StartNode from './_ui/StartNode';
-import Grid from "@mui/material/Grid2";
-import { Box } from '@mui/material';
-import React from 'react';
-
  
 const rfStyle = {
   backgroundColor: '#B8CEFF',
@@ -47,8 +42,7 @@ export default function PageContent(props:IProp) {
     const [nodes, setNodes] = useState(props.initialNodes);
     const [edges, setEdges] = useState(props.initialEdges);
     const [reactFlowInstance, setReactFlowInstance] = useState(null);
-    const CanvasRef=React.useRef<HTMLDivElement>(null);
-
+   
     const onNodesChange = useCallback(
       (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
       [setNodes],
@@ -74,33 +68,18 @@ export default function PageContent(props:IProp) {
   <h1>Scroll Down</h1>
   <p>Scroll down to see the sticky effect.</p>
 </div> */}
- <Grid container spacing={1} >
-        <Grid size={12} >
-          Header
-        </Grid>
-        <Grid size={9} >
-          <ReactFlowProvider>
-            <Box overflow="hidden" >
-            <div ref={CanvasRef} style={{height:"100%",width:"70%",position:"fixed"}} id='drawerContainer'>
-          <ReactFlow
-            onInit={onInit}
-            nodes={nodes}
-            edges={edges}
-            onNodesChange={onNodesChange}
-            onEdgesChange={onEdgesChange}
-            onConnect={onConnect}
-            nodeTypes={nodeTypes}
-            fitView
-            style={rfStyle}
-          />
-          </div>
-          </Box>
-          </ReactFlowProvider>
-        </Grid>
-        <Grid size={3}>
-         Right
-        </Grid>
-        </Grid>
+
+      <ReactFlow
+        onInit={onInit}
+        nodes={nodes}
+        edges={edges}
+        onNodesChange={onNodesChange}
+        onEdgesChange={onEdgesChange}
+        onConnect={onConnect}
+        nodeTypes={nodeTypes}
+        fitView
+        style={rfStyle}
+      />
       </>
     );
   }

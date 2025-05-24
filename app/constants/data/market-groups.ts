@@ -1,6 +1,6 @@
 import { MarketGroups } from "@/app/interface/IMarketinfo";
 
-export const  MARKET_GROUPS=
+export const  INDEX_GROUPS=
 [
     {
         "name": "BIST 30",

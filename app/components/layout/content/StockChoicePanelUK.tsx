@@ -2,12 +2,12 @@ import { STOCKS_LSE } from "@/app/constants/data/_stocksLSE";
 import CustomCard from "../../ui/CustomCard";
 import CustomizedTickerHook from "../../ui/CustomizedTickerHook";
 import { TickerBasicInfo } from "@/app/interface/ITickerExtra";
-import { MARKET_GROUPS } from "@/app/constants/data/market-groups";
+import { INDEX_GROUPS } from "@/app/constants/data/market-groups";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
-const ftse100Tickers=MARKET_GROUPS.find((group)=>group.name==="FTSE 100")?.tickers;
+const ftse100Tickers=INDEX_GROUPS.find((group)=>group.name==="FTSE 100")?.tickers;
 const ftse100TickersList=STOCKS_LSE.filter((stock)=>ftse100Tickers.includes(stock.Code)) as TickerBasicInfo[];
-const ftse250Tickers=MARKET_GROUPS.find((group)=>group.name==="FTSE 250")?.tickers;
+const ftse250Tickers=INDEX_GROUPS.find((group)=>group.name==="FTSE 250")?.tickers;
 const ftse250TickersList=STOCKS_LSE.filter((stock)=>ftse250Tickers.includes(stock.Code)) as TickerBasicInfo[];
 
 interface IProp{

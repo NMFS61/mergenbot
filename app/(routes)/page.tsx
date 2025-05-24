@@ -9,7 +9,7 @@ import {
 } from "@/app/helpers/pandas";
 import PageContent from "./pageContent";
 import { execute_Study } from "../backend/study/study-executor-service";
-import { MARKET_GROUPS } from "@/app/constants/data/market-groups";
+import { INDEX_GROUPS } from "@/app/constants/data/market-groups";
 
 import {
   downloadHistoricalData,
@@ -24,6 +24,7 @@ import { NextRequest } from "next/server";
 import { TickerDivData } from "../interface/ITickerExtra";
 import { I_StudyExecParams } from "../interface/IExecution";
 import Study1 from "../backend/study/study2-buy-drop-volatility";
+import { fetchAll } from "../backend/fetch/fetchAll";
 
 
 const downloadSingle = (ticker: string, exchange: string) => {
@@ -47,7 +48,7 @@ const part1 = () => {
       });
     }
   });
-  MARKET_GROUPS.forEach((group) => {
+  INDEX_GROUPS.forEach((group) => {
     console.log(group.name);
   });
 };
@@ -152,58 +153,58 @@ const getSharesByDividendYield = () => {
 export default async function Page({searchParams,}: 
                                                 {searchParams?: { [key: string]: string | undefined };}) 
   {
-  
+    console.log(fetchAll());
     //  console.log(updateHistoricalData_ALL());
 
   // dropByAnalysis1();
   // dropByAnalysisWithStudyExecutor();
   // getSharesByDividendYield();
 
-  let params={
-    studyId: '2',
-    dateFrom: new Date('2000-01-01T00:00:00.000Z'),
-    dateTo: new Date('2025-01-01T00:00:00.000Z'),
-    dateAll: false,
-    marketParams: {
-      markets: [
-        'BIST 30',  'BIST 50',
-        'BIST 100', 'FTSE 100',
-        'FTSE 250', 'NASDAQ 100',
-        'NYSE 100', 'NYSE 200',
-        'FOREX'
-      ],
-      tickers: []
-    },
-    studyParams: { dropByPC: '50', increaseTargetPC: '100', 'shorterVolatilityPC': '5' },
-  } as I_StudyExecParams;
+  // let params={
+  //   studyId: '2',
+  //   dateFrom: new Date('2000-01-01T00:00:00.000Z'),
+  //   dateTo: new Date('2025-01-01T00:00:00.000Z'),
+  //   dateAll: false,
+  //   marketParams: {
+  //     markets: [
+  //       'BIST 30',  'BIST 50',
+  //       'BIST 100', 'FTSE 100',
+  //       'FTSE 250', 'NASDAQ 100',
+  //       'NYSE 100', 'NYSE 200',
+  //       'FOREX'
+  //     ],
+  //     tickers: []
+  //   },
+  //   studyParams: { dropByPC: '50', increaseTargetPC: '100', 'shorterVolatilityPC': '5' },
+  // } as I_StudyExecParams;
 
   
-  const results=execute_Study(params);
-  results.forEach((r)=>{
-    console.log(r.indexGroup);
-    r.execResults.forEach((er)=>{
-      console.log(er.ticker);
-      // console.log(er.meta.pattern);
-      let patternStr="";
-      er.meta.pattern.forEach((p)=>{
-        patternStr=patternStr+p.pattern;
-      })
+  // const results=execute_Study(params);
+  // results.forEach((r)=>{
+  //   console.log(r.indexGroup);
+  //   r.execResults.forEach((er)=>{
+  //     console.log(er.ticker);
+  //     // console.log(er.meta.pattern);
+  //     let patternStr="";
+  //     er.meta.pattern.forEach((p)=>{
+  //       patternStr=patternStr+p.pattern;
+  //     })
       
-      const indexes=getAllIndexes(patternStr,"-------+");
-      let resStr="";
-      indexes.forEach((i)=>{
-        resStr=resStr+patternStr.substring(i+"-------+".length,i+"-------+".length+1);
-      });
-      if(resStr!="") {
+  //     const indexes=getAllIndexes(patternStr,"-------+");
+  //     let resStr="";
+  //     indexes.forEach((i)=>{
+  //       resStr=resStr+patternStr.substring(i+"-------+".length,i+"-------+".length+1);
+  //     });
+  //     if(resStr!="") {
         
-        const indplus=getAllIndexes(resStr,"+")
-        const indminus=getAllIndexes(resStr,"-")
-        const pc=indplus.length/(indplus.length+indminus.length);
-        console.log(`${er.ticker}:${resStr} (${pc}%)`);
+  //       const indplus=getAllIndexes(resStr,"+")
+  //       const indminus=getAllIndexes(resStr,"-")
+  //       const pc=indplus.length/(indplus.length+indminus.length);
+  //       console.log(`${er.ticker}:${resStr} (${pc}%)`);
        
-      }
-    })
-  })
+  //     }
+  //   })
+  // })
   
 
   return <PageContent temp={[""]} />;

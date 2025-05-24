@@ -7,6 +7,15 @@ export interface I_TickerRow{
     volume: number
 }
 
+export interface I_TickerRow{
+    date: Date
+    open: number
+    high: number
+    low: number
+    close: number
+    volume: number
+}
+
 export interface I_TickerSplitRow{
     date: Date
     split: string

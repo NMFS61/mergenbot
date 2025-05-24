@@ -1,3 +1,4 @@
+import { I_TickerDivRow, I_TickerRow, I_TickerSplitRow } from "./ITickerData"
 
 export interface MarketGroups {
         name: string

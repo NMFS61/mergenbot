@@ -2,14 +2,14 @@ import { STOCKS_US } from "@/app/constants/data/_stocksUS";
 import CustomCard from "../../ui/CustomCard";
 import CustomizedTickerHook from "../../ui/CustomizedTickerHook";
 import { TickerBasicInfo } from "@/app/interface/ITickerExtra";
-import { MARKET_GROUPS } from "@/app/constants/data/market-groups";
+import { INDEX_GROUPS } from "@/app/constants/data/market-groups";
 import { Checkbox, FormControlLabel } from "@mui/material";
 import React from "react";
-const nasdaq100Tickers=MARKET_GROUPS.find((group)=>group.name==="NASDAQ 100")?.tickers;
+const nasdaq100Tickers=INDEX_GROUPS.find((group)=>group.name==="NASDAQ 100")?.tickers;
 const nasdaq100TickersList=STOCKS_US.filter((stock)=>nasdaq100Tickers.includes(stock.Code)) as TickerBasicInfo[];
-const nyse100Tickers=MARKET_GROUPS.find((group)=>group.name==="NYSE 100")?.tickers;
+const nyse100Tickers=INDEX_GROUPS.find((group)=>group.name==="NYSE 100")?.tickers;
 const nyse100TickersList=STOCKS_US.filter((stock)=>nyse100Tickers.includes(stock.Code)) as TickerBasicInfo[];
-const nyse200Tickers=MARKET_GROUPS.find((group)=>group.name==="NYSE 200")?.tickers;
+const nyse200Tickers=INDEX_GROUPS.find((group)=>group.name==="NYSE 200")?.tickers;
 const nyse200TickersList=STOCKS_US.filter((stock)=>nyse200Tickers.includes(stock.Code)) as TickerBasicInfo[];
 
 interface IProp{

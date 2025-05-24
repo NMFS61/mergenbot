@@ -1,4 +1,4 @@
-import { MARKET_GROUPS } from "@/app/constants/data/market-groups";
+import { INDEX_GROUPS } from "@/app/constants/data/market-groups";
 import { readCSVSync } from "@/app/helpers/pandas";
 import { getMarketGroupsWithMeta } from "@/app/helpers/readMarketMetaData";
 
